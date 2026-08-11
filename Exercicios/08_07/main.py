@@ -230,7 +230,7 @@ while True:
                     printCarro(carro)
                 else:
                     print("\nCarro não encontrado.\n")
-            else:
+            elif entrada2 == 2:
                 search = input("\nInsira a palavra de busca: ")
                 print()
                 if not search:
@@ -241,6 +241,8 @@ while True:
                     printList(carros)
                 else:
                     print("\nNenhum carro encontrado.\n")
+            else:
+                print("\nOpção inválida.\n")
         case 6:
             print("\nSaindo...")
             break
