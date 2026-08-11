@@ -106,7 +106,7 @@ def mostrarTodos():
         print()
 
     except FileNotFoundError:
-        print("Arquivo não encontrado.\n")
+        print("\nArquivo não encontrado.\n")
 
 def consultarInfo(search):
     try:
