@@ -246,4 +246,3 @@ while True:
             break
         case _:
             print("\nOpção inválida.\n")
-            # vin, marca, modelo, versao, ano, cor, valor
