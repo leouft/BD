@@ -108,19 +108,22 @@ def mostrarTodos():
     except FileNotFoundError:
         print("Arquivo não encontrado.\n")
 
-def consultarMarca(marca):
+def consultarInfo(search):
     try:
+        search = search.lower()
         with open("carros.txt", "r") as file:
             carros = []
             for line in file:
                 line = line.strip()
                 if line:
                     infos = line.split(";")
-                    if infos[1] == marca:
-                        carroRead = carroReadCreate(infos)
-                        carros.append(carroRead)
+                    for info in infos:
+                        info = info.lower()
+                        if search in info:
+                            carroRead = carroReadCreate(infos)
+                            carros.append(carroRead)
 
-        return carros # Retorna um vetor com todos os carros de determinada marca  
+        return carros
 
     except FileNotFoundError:
         return []
@@ -152,44 +155,95 @@ def printList(carros):
         print("Nenhum carro na lista.\n")
 
 
-# Testes
-carro = Carro(31, "Fiat", "Uno", "Mille Way Economy", 2009, "Prata", 23200)
+# Execução
 
-# # Inserção
-if inserir(carro):
-    print("Carro inserido.\n")
-else:
-    print("VIN já pertence a outro carro.\n")
-
-
-# # Atualização
-carro.valor = 23200
-if atualizar(carro):
-    print("Carro atualizado.\n")
-else:
-    print("VIN não encontrado.\n")
-
-
-# # Deleção
-if deletar(31):
-    print("Carro deletado.")
-    inserir(carro)
-    print("Carro inserido novamente.\n")
-else:
-    print("VIN não encontrado ou arquivo inexistente.\n")
-
-
-# # Consulta
-carroConsultado = consulta(31)
-if carroConsultado:
-    printCarro(carroConsultado)
-else:
-    print("Nenhum carro encontrado.\n")
-
-
-# # Mostrar Todos
-mostrarTodos()
-
-
-# # Consultar Marca
-printList(consultarMarca("Toyota"))
+while True:
+    print("======= MENU =======\n1 - Inserir carro\n2 - Atualizar carro\n3 - Deletar carro\n4 - Mostrar todos\n5 - Consultar\n6 - Sair")
+    entrada = int(input("Opção (1 - 6): "))
+    match entrada:
+        case 1:
+            print("\nInsira as informações.")
+            vin = int(input("VIN: "))
+            carSearch = consulta(vin)
+            if carSearch:
+                print("\nJá existe um veículo com esse VIN.\n")
+                continue
+            marca = input("Marca: ")
+            modelo = input("Modelo: ")
+            version = input("Versão: ")
+            ano = int(input("Ano: "))
+            cor = input("Cor: ")
+            valor = float(input("Valor: "))
+            carro = Carro(vin, marca, modelo, version, ano, cor, valor)
+            inserir(carro)
+            print("\nCarro inserido.\n")
+        case 2:
+            vin = int(input("\nInsira o VIN do carro: "))
+            carSearch = consulta(vin)
+            if carSearch:
+                print("\nO que deseja atualizar?\n1 - Marca\n2 - Modelo\n3 - Versão\n4 - Ano\n5 - Cor\n6 - Valor\n7 - Atualizar tudo")
+                entrada2 = int(input("Opção (1 - 7): "))
+                if entrada2 != 7:
+                    match entrada2:
+                        case 1:
+                            carSearch.marca = input("\nDigite a marca: ")
+                        case 2:
+                            carSearch.modelo = input("\nDigite o modelo: ")
+                        case 3:
+                            carSearch.versao = input("\nDigite a versão: ")
+                        case 4:
+                            carSearch.ano = int(input("\nDigite o ano: "))
+                        case 5:
+                            carSearch.cor = input("\nDigite a cor: ")
+                        case 6:
+                            carSearch.valor = float(input("\nDigite o valor: "))
+                        case _:
+                            print("\nOpção inválida.\n")
+                            continue
+                else:        
+                    carSearch.marca = input("Marca: ")
+                    carSearch.modelo = input("Modelo: ")
+                    carSearch.versao = input("Versão: ")
+                    carSearch.ano = int(input("Ano: "))
+                    carSearch.cor = input("Cor: ")
+                    carSearch.valor = float(input("Valor: "))
+                atualizar(carSearch)
+                print("\nCarro atualizado.\n")
+            else:
+                print("\nCarro inexistente.\n")
+        case 3:
+            vin = int(input("\nInsira o VIN do carro: "))
+            if deletar(vin):
+                print("\nCarro deletado.\n")
+            else:
+                print("\nCarro não encontrado.\n")
+        case 4:
+            mostrarTodos()
+        case 5:
+            print("\nQual modo de consulta deseja?\n1 - VIN\n2 - Informação")
+            entrada2 = int(input("Opção (1 - 2): "))
+            if entrada2 == 1:
+                vin = int(input("\nInsira o VIN: "))
+                carro = consulta(vin)
+                if carro:
+                    print()
+                    printCarro(carro)
+                else:
+                    print("\nCarro não encontrado.\n")
+            else:
+                search = input("\nInsira a palavra de busca: ")
+                print()
+                if not search:
+                    print("nNenhuma entrada.\n")
+                    continue
+                carros = consultarInfo(search)
+                if carros:
+                    printList(carros)
+                else:
+                    print("\nNenhum carro encontrado.\n")
+        case 6:
+            print("\nSaindo...")
+            break
+        case _:
+            print("\nOpção inválida.\n")
+            # vin, marca, modelo, versao, ano, cor, valor
