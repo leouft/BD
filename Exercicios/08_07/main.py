@@ -1,3 +1,5 @@
+# Feito por Leonardo Soares Pinto e Gabriel Tavares Ferreira
+
 class Carro:
     def __init__(self, vin, marca, modelo, versao, ano, cor, valor):
         self.vin = vin
