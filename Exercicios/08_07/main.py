@@ -234,7 +234,7 @@ while True:
                 search = input("\nInsira a palavra de busca: ")
                 print()
                 if not search:
-                    print("nNenhuma entrada.\n")
+                    print("\nNenhuma entrada.\n")
                     continue
                 carros = consultarInfo(search)
                 if carros:
